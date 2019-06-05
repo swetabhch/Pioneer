@@ -33,6 +33,7 @@ def genFib(n):
 		d[i] = d[i-1] + d[i-2]
 	return d
 
+# calculates z-array for period detection
 def prefix(s):
     n = len(s)
     prefix = [-1]*n
@@ -56,32 +57,40 @@ def prefix(s):
                 r -= 1
     return prefix
 
-def solve(l):
+# calculates period length given SG-values
+def period(l):
     l = l[::-1]
     pref = prefix(l)
     for i in range(1,len(pref)):
         pref[i] -= pref[i] % i
+    # print(pref)
     best,end = 1,1
     for i in range(1,len(l)):
         z = pref[i]
         curend = i + pref[i]
         if pref[i] == 0:
-            continue
+          continue
         if z % i == 0 and i != curend and curend >= end:
-            best = i
-            end = curend
+          best = i
+          end = curend
     for i in range(1,len(l)):
         if best % i == 0 and i + pref[i] == end:
             if pref[i] == 0:
                 continue
-            ans = [i, len(l) - pref[i] - i - len(l)%i]
-            return ans
-    ans = [best, len(l) - pref[best] - best - len(l)%best]
-    return ans
+            return i
+    return best
 
-def calcPeriod(l):
-    ans = solve(l)
-    print("Length " + str(ans[0]))
-    print("Start " + str(ans[1]))
+# calculates pre-period length given SG-values and period length
+def preperiod(sg, p):
+    for i in range(len(sg)-p):
+        if sg[i:i+p] == sg[i+p:i+2*p] == sg[i+2*p:i+3*p]:
+            return i
+    else:
+        return -1
+
+def solve(sg):
+    p = period(sg)
+    n0 = preperiod(sg, p)
+    return [p, n0]
 
 # print(calcPeriod(subtractionGame(geoSeq(1,3,10), 10)))
