@@ -1,7 +1,7 @@
 import mysql.connector
 from subtractionGame import *
 
-cnx = mysql.connector.connect(user='root', password='Tikumamni123', host='localhost', database='connect')
+cnx = mysql.connector.connect(user='root', password='', host='localhost', database='connect')
 cur = cnx.cursor()
 
 # cur.execute("create table fibgame(size int(7), period int(7), start int(7));")
